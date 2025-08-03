@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="styles.css" />
+  <title>User Panel - Bhatti Travel & Tours</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .site-logo {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+    }
+
+    .user-panel {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #007bff;
+    }
+
+    form input {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .ticket-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .ticket-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    .ticket-card button {
+      margin-top: 10px;
+      margin-right: 5px;
+    }
+
+    .edit-btn {
+      background-color: #28a745;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-logo">
+      <img src="assets/logo.jpeg" alt="Logo" class="site-logo" />
+      <h1>Bhatti Travel & Tours</h1>
+    </div>
+  </nav>
+
+  <main class="user-panel">
+    <section class="ticket-input-section">
+      <h2>Add New Ticket</h2>
+      <form id="ticket-form">
+        <input type="date" id="date" required />
+        <input type="text" id="time" placeholder="Time (e.g., 09:00-11:00)" required />
+        <input type="text" id="airline" placeholder="Airline" required />
+        <input type="text" id="route" placeholder="Route (e.g., LHE-MCT)" required />
+        <input type="text" id="bag" placeholder="Bag (e.g., 20+7KG)" required />
+        <input type="text" id="meal" placeholder="Meal (YES/NO)" required />
+        <input type="text" id="fare" placeholder="Fare (e.g., 102000 PKR)" required />
+        <button type="submit">Add Ticket</button>
+      </form>
+    </section>
+
+    <section class="ticket-display-section">
+      <h2>All Tickets</h2>
+      <div id="admin-ticket-list" class="ticket-list"></div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("ticket-form");
+    const list = document.getElementById("admin-ticket-list");
+
+    let tickets = JSON.parse(localStorage.getItem("adminTickets")) || [];
+
+    function saveTickets() {
+      localStorage.setItem("adminTickets", JSON.stringify(tickets));
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const newTicket = {
+        id: Date.now(),
+        date: document.getElementById("date").value,
+        time: document.getElementById("time").value,
+        airline: document.getElementById("airline").value,
+        route: document.getElementById("route").value,
+        bag: document.getElementById("bag").value,
+        meal: document.getElementById("meal").value,
+        fare: document.getElementById("fare").value,
+      };
+
+      tickets.push(newTicket);
+      saveTickets();
+      form.reset();
+      renderTickets();
+    });
+
+    function renderTickets() {
+      list.innerHTML = "";
+      tickets.forEach(ticket => {
+        const ticketCard = document.createElement("div");
+        ticketCard.className = "ticket-card";
+
+        ticketCard.innerHTML = `
+          <h3>${ticket.airline} (${ticket.route})</h3>
+          <p><strong>Date:</strong> ${ticket.date}</p>
+          <p><strong>Time:</strong> ${ticket.time}</p>
+          <p><strong>Bag:</strong> ${ticket.bag}</p>
+          <p><strong>Meal:</strong> ${ticket.meal}</p>
+          <p><strong>Fare:</strong> ${ticket.fare}</p>
+          <button class="edit-btn">Edit</button>
+          <button class="delete-btn">Delete</button>
+        `;
+
+        // DELETE
+        ticketCard.querySelector(".delete-btn").addEventListener("click", () => {
+          tickets = tickets.filter(t => t.id !== ticket.id);
+          saveTickets();
+          renderTickets();
+        });
+
+        // EDIT
+        ticketCard.querySelector(".edit-btn").addEventListener("click", () => {
+          const updatedFare = prompt("Edit Fare", ticket.fare);
+          if (updatedFare) {
+            ticket.fare = updatedFare;
+            saveTickets();
+            renderTickets();
+          }
+        });
+
+        list.appendChild(ticketCard);
+      });
+    }
+
+    // On page load
+    renderTickets();
+  </script>
+</body>
+</html>
