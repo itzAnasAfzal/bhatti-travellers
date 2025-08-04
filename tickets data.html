@@ -1,64 +1,271 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Ticket Details</title>
+    <title>View Tickets</title>
     <style>
       body {
         font-family: Arial, sans-serif;
         padding: 30px;
-        background-color: #f9f9f9;
+        background: #f0f0f0;
       }
-      .ticket-box {
-        max-width: 500px;
-        margin: auto;
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
+
       h2 {
+        margin-top: 40px;
+        color: #444;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        background: #fff;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        padding: 10px;
         text-align: center;
+        border: 1px solid #ccc;
       }
-      .ticket-field {
-        margin-bottom: 12px;
-        font-size: 16px;
+
+      th {
+        background-color: #007bff;
+        color: white;
       }
-      .ticket-field span {
-        font-weight: bold;
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
       }
     </style>
   </head>
   <body>
-    <div class="ticket-box">
-      <h2>Your Ticket Details</h2>
-      <div class="ticket-field">
-        <span>Airline:</span> <span id="airline"></span>
-      </div>
-      <div class="ticket-field"><span>Date:</span> <span id="date"></span></div>
-      <div class="ticket-field">
-        <span>Bag Weight:</span> <span id="bag"></span> kg
-      </div>
-      <div class="ticket-field">
-        <span>Meal Option:</span> <span id="meal"></span>
-      </div>
-      <div class="ticket-field">
-        <span>Fare:</span> <span id="fare"></span> PKR
-      </div>
-    </div>
+    <h1>All Tickets Grouped by Airline</h1>
+
+    <div id="ticketTablesContainer"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDLEu8uHZQJT4IchhjaYDm2QH029EFVrgg",
+        authDomain: "ticket-data-bdeb6.firebaseapp.com",
+        projectId: "ticket-data-bdeb6",
+        storageBucket: "ticket-data-bdeb6.firebasestorage.app",
+        messagingSenderId: "625235648325",
+        appId: "1:625235648325:web:7a04f8d316f0c43432e82c",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      const container = document.getElementById("ticketTablesContainer");
+
+      db.collection("tickets")
+        .get()
+        .then((querySnapshot) => {
+          const groupedData = {};
+
+          querySnapshot.forEach((doc) => {
+            const ticket = doc.data();
+            const airline = ticket.airline || "Unknown Airline";
+
+            if (!groupedData[airline]) {
+              groupedData[airline] = [];
+            }
+
+            groupedData[airline].push(ticket);
+          });
+
+          for (const airline in groupedData) {
+            const tickets = groupedData[airline];
+
+            // Create title
+            const title = document.createElement("h2");
+            title.textContent = airline.toUpperCase();
+            container.appendChild(title);
+
+            // Create table
+            const table = document.createElement("table");
+            const thead = document.createElement("thead");
+            const headerRow = document.createElement("tr");
+
+            ["Date", "Bag", "Meal", "Fare"].forEach((headerText) => {
+              const th = document.createElement("th");
+              th.textContent = headerText;
+              headerRow.appendChild(th);
+            });
+
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement("tbody");
+            tickets.forEach((ticket) => {
+              const row = document.createElement("tr");
+
+              const dateCell = document.createElement("td");
+              dateCell.textContent = ticket.date;
+
+              const bagCell = document.createElement("td");
+              bagCell.textContent = ticket.bagWeight + " kg";
+
+              const mealCell = document.createElement("td");
+              mealCell.textContent = ticket.meal === "yes" ? "Yes" : "No";
+
+              const fareCell = document.createElement("td");
+              fareCell.textContent = "PKR " + ticket.fare;
+
+              row.appendChild(dateCell);
+              row.appendChild(bagCell);
+              row.appendChild(mealCell);
+              row.appendChild(fareCell);
+
+              tbody.appendChild(row);
+            });
+
+            table.appendChild(tbody);
+            container.appendChild(table);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching tickets:", error);
+        });
+    </script>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket Viewer</title>
+    <style>
+      body {
+        padding: 30px;
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+      }
+
+      .airline-section {
+        margin-bottom: 40px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .airline-logo {
+        max-height: 50px;
+        display: block;
+        margin: 0 auto 20px auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: center;
+      }
+
+      th {
+        background-color: #f1f1f1;
+      }
+
+      h3 {
+        text-align: center;
+        margin-bottom: 5px;
+        text-transform: capitalize;
+        color: #222;
+      }
+    </style>
+  </head>
+  <body>
+    <h2 style="text-align: center">All Tickets Grouped by Airline</h2>
+    <div id="ticketContainer"></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
     <script>
-      const data = JSON.parse(localStorage.getItem("ticketData"));
-      if (data) {
-        document.getElementById("airline").textContent = data.airline;
-        document.getElementById("date").textContent = data.date;
-        document.getElementById("bag").textContent = data.bagWeight;
-        document.getElementById("meal").textContent = data.meal;
-        document.getElementById("fare").textContent = data.fare;
-      } else {
-        document.body.innerHTML =
-          "<h2 style='text-align:center;'>No ticket data found</h2>";
-      }
+      const firebaseConfig = {
+        apiKey: "AIzaSyDLEu8uHZQJT4IchhjaYDm2QH029EFVrgg",
+        authDomain: "ticket-data-bdeb6.firebaseapp.com",
+        projectId: "ticket-data-bdeb6",
+        storageBucket: "ticket-data-bdeb6.firebasestorage.app",
+        messagingSenderId: "625235648325",
+        appId: "1:625235648325:web:7a04f8d316f0c43432e82c",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      const ticketContainer = document.getElementById("ticketContainer");
+
+      db.collection("tickets")
+        .get()
+        .then((snapshot) => {
+          const grouped = {};
+
+          // Group tickets by airline
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            if (!grouped[data.airline]) {
+              grouped[data.airline] = [];
+            }
+            grouped[data.airline].push(data);
+          });
+
+          // Display each group
+          Object.keys(grouped).forEach((airline) => {
+            const section = document.createElement("div");
+            section.className = "airline-section";
+
+            // Airline logo and name
+            section.innerHTML = `
+          <img src="assets/logos/${airline}.png" alt="${airline}" class="airline-logo" />
+          <h3>${airline}</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Bag</th>
+                <th>Meal</th>
+                <th>Fare (PKR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${grouped[airline]
+                .map(
+                  (ticket) => `
+                <tr>
+                  <td>${ticket.date}</td>
+                  <td>${ticket.bagWeight} kg</td>
+                  <td>${ticket.meal}</td>
+                  <td>${ticket.fare}</td>
+                </tr>
+              `
+                )
+                .join("")}
+            </tbody>
+          </table>
+        `;
+
+            ticketContainer.appendChild(section);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching tickets:", error);
+        });
     </script>
   </body>
 </html>
