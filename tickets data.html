@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ticket Details</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 30px;
+        background-color: #f9f9f9;
+      }
+      .ticket-box {
+        max-width: 500px;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+      }
+      .ticket-field {
+        margin-bottom: 12px;
+        font-size: 16px;
+      }
+      .ticket-field span {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ticket-box">
+      <h2>Your Ticket Details</h2>
+      <div class="ticket-field">
+        <span>Airline:</span> <span id="airline"></span>
+      </div>
+      <div class="ticket-field"><span>Date:</span> <span id="date"></span></div>
+      <div class="ticket-field">
+        <span>Bag Weight:</span> <span id="bag"></span> kg
+      </div>
+      <div class="ticket-field">
+        <span>Meal Option:</span> <span id="meal"></span>
+      </div>
+      <div class="ticket-field">
+        <span>Fare:</span> <span id="fare"></span> PKR
+      </div>
+    </div>
+
+    <script>
+      const data = JSON.parse(localStorage.getItem("ticketData"));
+      if (data) {
+        document.getElementById("airline").textContent = data.airline;
+        document.getElementById("date").textContent = data.date;
+        document.getElementById("bag").textContent = data.bagWeight;
+        document.getElementById("meal").textContent = data.meal;
+        document.getElementById("fare").textContent = data.fare;
+      } else {
+        document.body.innerHTML =
+          "<h2 style='text-align:center;'>No ticket data found</h2>";
+      }
+    </script>
+  </body>
+</html>

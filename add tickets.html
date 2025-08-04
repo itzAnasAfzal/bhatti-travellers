@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ticket Details with Airline Logos</title>
+    <style>
+      .custom-select-wrapper {
+        position: relative;
+        width: 250px;
+      }
+
+      .custom-select {
+        border: 1px solid #ccc;
+        padding: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      .custom-options {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        display: none;
+        z-index: 10;
+      }
+
+      .custom-option {
+        padding: 7px;
+        text-align: center;
+        border-bottom: 1px solid #3a3a3a;
+        gap: 2px;
+        cursor: pointer;
+      }
+
+      .custom-option:hover {
+        background-color: #f0f0f0;
+      }
+
+      .custom-option img {
+        width: 70px;
+        height: auto;
+        object-fit: contain;
+        text-align: center;
+      }
+
+      .custom-select img {
+        width: 100px;
+        height: auto;
+        object-fit: contain;
+        text-align: center;
+      }
+
+      .selected-content {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start; /* Start with text aligned left */
+        align-items: center;
+      }
+
+      .selected-content img {
+        margin: 0 auto;
+        display: block;
+      }
+      .bag-input-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100px;
+      }
+
+      .bag-input-wrapper input[type="number"] {
+        width: 100%;
+        padding-right: 30px; /* space for kg */
+        box-sizing: border-box;
+        text-align: right;
+      }
+
+      .unit-label {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #333;
+        font-size: 14px;
+        pointer-events: none;
+      }
+      select {
+        padding: 6px 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .fare-input-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 150px;
+      }
+
+      .unit-label {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #333;
+        font-size: 14px;
+        pointer-events: none;
+      }
+
+      .fare-input-wrapper input[type="number"] {
+        width: 100%;
+        padding-right: 50px; /* space for the 'PKR' label */
+        box-sizing: border-box;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Enter Ticket Details</h2>
+
+    <form id="ticketForm">
+      <!-- Custom Dropdown for Airline Selection -->
+      <label>Select Airline:</label>
+      <div class="custom-select-wrapper">
+        <div class="custom-select" id="selectedAirline">
+          <div class="selected-content">
+            <span>Select an airline</span>
+          </div>
+        </div>
+        <div class="custom-options" id="airlineOptions">
+          <div class="custom-option" data-value="airline1">
+            <img src="assets/logos/airblue.png" alt="Airline 1" />
+          </div>
+          <div class="custom-option" data-value="airline2">
+            <img src="assets/logos/airsial.png" alt="Airline 2" />
+          </div>
+          <div class="custom-option" data-value="airline3">
+            <img src="assets/logos/british.png" alt="Airline 3" />
+          </div>
+          <div class="custom-option" data-value="airline3">
+            <img src="assets/logos/emirates.png" alt="Airline 4" />
+          </div>
+          <div class="custom-option" data-value="airline3">
+            <img src="assets/logos/mahan.png" alt="Airline 5" />
+          </div>
+          <div class="custom-option" data-value="airline3">
+            <img src="assets/logos/oman.png" alt="Airline 6" />
+          </div>
+          <div class="custom-option" data-value="airline3">
+            <img src="assets/logos/qatar.png" alt="Airline 7" />
+          </div>
+          <div class="custom-option" data-value="airline3">
+            <img src="assets/logos/sereneair.png" alt="Airline 8" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden real input to store selected airline -->
+      <input type="hidden" name="airline" id="airlineInput" required />
+
+      <br />
+      <!-- Date Input -->
+      <label for="flightDate">Select Date:</label>
+      <input type="date" id="flightDate" name="flightDate" required />
+
+      <br /><br />
+      <label for="bagWeight">Bag Weight:</label>
+      <div class="bag-input-wrapper">
+        <input
+          type="number"
+          id="bagWeight"
+          name="bagWeight"
+          min="0"
+          required
+          placeholder="0"
+        />
+        <span class="unit-label">kg</span>
+      </div>
+
+      <br /><br />
+      <label for="mealOption">Meal Option:</label>
+      <select id="mealOption" name="mealOption" required>
+        <option value="" disabled selected>Select</option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+
+      <br /><br />
+      <label for="fare">Fare (Price):</label>
+      <div class="fare-input-wrapper">
+        <input type="number" id="fare" name="fare" min="0" required />
+        <span class="unit-label">PKR\-</span>
+      </div>
+      <!-- Remaining Inputs (date, time, etc.) go here... -->
+    </form>
+
+    <script>
+      const selected = document.getElementById("selectedAirline");
+      const options = document.getElementById("airlineOptions");
+      const input = document.getElementById("airlineInput");
+      const contentDiv = document.querySelector(
+        "#selectedAirline .selected-content"
+      );
+
+      // Toggle dropdown open/close
+      selected.addEventListener("click", () => {
+        options.style.display =
+          options.style.display === "block" ? "none" : "block";
+      });
+
+      // Handle airline selection
+      document.querySelectorAll(".custom-option").forEach((option) => {
+        option.addEventListener("click", () => {
+          const image = option.querySelector("img").cloneNode();
+
+          // Clear previous content
+          contentDiv.innerHTML = "";
+          contentDiv.style.justifyContent = "center"; // Center the image
+          contentDiv.appendChild(image);
+
+          // Set hidden input value
+          input.value = option.dataset.value;
+
+          // Close dropdown
+          options.style.display = "none";
+        });
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", (e) => {
+        if (
+          !document.querySelector(".custom-select-wrapper").contains(e.target)
+        ) {
+          options.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>

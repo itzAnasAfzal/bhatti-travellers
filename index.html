@@ -3,457 +3,335 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <title>Bhatti Travellers</title>
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        padding: 30px;
+        background-color: #f9f9f9;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+        color: #222;
+      }
+
+      form {
+        max-width: 800px;
+        margin: auto;
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .form-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        margin-bottom: 6px;
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+      }
+
+      input[type="number"],
+      input[type="date"],
+      select {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      /* Airline dropdown styles */
+      .custom-select-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .custom-select {
+        border: 1px solid #ccc;
+        padding: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        height: 40px;
+        border-radius: 5px;
+        background-color: #fff;
+      }
+
+      .selected-content {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .selected-content img {
+        margin: 0 auto;
+        display: block;
+        max-height: 30px;
+      }
+
+      .custom-options {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        display: none;
+        z-index: 10;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .custom-option {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+      }
+
+      .custom-option:hover {
+        background-color: #f0f0f0;
+      }
+
+      .custom-option img {
+        width: 70px;
+        height: auto;
+        object-fit: contain;
+      }
+
+      /* Bag and Fare input wrappers */
+      .bag-input-wrapper,
+      .fare-input-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+      }
+
+      .bag-input-wrapper input[type="number"],
+      .fare-input-wrapper input[type="number"] {
+        width: 100%;
+        padding-right: 50px;
+        text-align: right;
+      }
+      .flex-grow {
+        flex: 2;
+      }
+      .unit-label {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #555;
+        font-size: 14px;
+        pointer-events: none;
+      }
+      .add-ticket-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+      }
+
+      .add-ticket-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
   </head>
   <body>
-    <nav>
-      <div class="nav__header">
-        <div class="nav__logo">
-          <a href="#"
-            ><img src="assets/logo.jpeg" alt="Logo" class="site-logo"
-          /></a>
+    <form id="ticketForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Select Airline:</label>
+          <div class="custom-select-wrapper">
+            <div class="custom-select" id="selectedAirline">
+              <div class="selected-content">
+                <span>Select an airline</span>
+              </div>
+            </div>
+            <div class="custom-options" id="airlineOptions">
+              <div class="custom-option" data-value="airline1">
+                <img src="assets/logos/airblue.png" alt="Airline 1" />
+              </div>
+              <div class="custom-option" data-value="airline2">
+                <img src="assets/logos/airsial.png" alt="Airline 2" />
+              </div>
+              <div class="custom-option" data-value="airline3">
+                <img src="assets/logos/british.png" alt="Airline 3" />
+              </div>
+              <div class="custom-option" data-value="airline3">
+                <img src="assets/logos/emirates.png" alt="Airline 4" />
+              </div>
+              <div class="custom-option" data-value="airline3">
+                <img src="assets/logos/mahan.png" alt="Airline 5" />
+              </div>
+              <div class="custom-option" data-value="airline3">
+                <img src="assets/logos/oman.png" alt="Airline 6" />
+              </div>
+              <div class="custom-option" data-value="airline3">
+                <img src="assets/logos/qatar.png" alt="Airline 7" />
+              </div>
+              <div class="custom-option" data-value="airline3">
+                <img src="assets/logos/sereneair.png" alt="Airline 8" />
+              </div>
+            </div>
+          </div>
+          <input type="hidden" name="airline" id="airlineInput" required />
         </div>
-        <div class="nav__menu__btn" id="menu-btn">
-          <i class="ri-menu-line"></i>
-        </div>
-      </div>
-      <ul class="nav__links" id="nav-links">
-        <li><a href="#home">HOME</a></li>
-        <li><a href="#about">ABOUT</a></li>
-        <li><a href="#tour">TOUR</a></li>
-        <li><a href="#package">PACKAGE</a></li>
-        <li><a href="#contact">CONTACT</a></li>
-        <li><a href="#">BOOK TRIP</a></li>
-      </ul>
-      <div class="nav__btns">
-        <a
-          href="user-panel.html"
-          style="
-            background-color: rgb(40, 139, 233);
-            padding: 10px;
-            color: #fff;
-          "
-          >Go to Admin Panel</a
-        >
-      </div>
-    </nav>
 
-    <header id="home">
-      <div class="header__container">
-        <div class="header__content">
-          <p>ELEVATE YOUR TRAVEL JOURNEY</p>
-          <h1>Experience The Magic Of Flight!</h1>
-          <div class="header__btns">
-            <button class="btn">Book A Trip Now</button>
-            <a href="#">
-              <span><i class="ri-play-circle-fill"></i></span>
-            </a>
-          </div>
-        </div>
-        <div class="header__image">
-          <img src="assets/header.png" alt="header" />
+        <div class="form-group">
+          <label for="flightDate">Select Date:</label>
+          <input type="date" id="flightDate" name="flightDate" required />
         </div>
       </div>
-    </header>
 
-    <section class="section__container destination__container" id="about">
-      <h2 class="section__header">Popular Destination</h2>
-      <p class="section__description">
-        Discover the Most Loved Destinations Around the Globe
-      </p>
-      <div class="destination__grid">
-        <div class="destination__card">
-          <img src="assets/destination-1.jpg" alt="destination" />
-          <div class="destination__card__details">
-            <div>
-              <h4>Tradition and Futurism</h4>
-              <p>New York City, USA</p>
-            </div>
-            <div class="destination__rating">
-              <span><i class="ri-star-fill"></i></span>
-              4.7
-            </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="bagWeight">Bag Weight:</label>
+          <div class="bag-input-wrapper">
+            <input
+              type="number"
+              id="bagWeight"
+              name="bagWeight"
+              min="0"
+              required
+              placeholder="0"
+            />
+            <span class="unit-label">kg</span>
           </div>
         </div>
-        <div class="destination__card">
-          <img src="assets/destination-2.jpg" alt="destination" />
-          <div class="destination__card__details">
-            <div>
-              <h4>The City of Lights</h4>
-              <p>Paris, France</p>
-            </div>
-            <div class="destination__rating">
-              <span><i class="ri-star-fill"></i></span>
-              4.5
-            </div>
-          </div>
-        </div>
-        <div class="destination__card">
-          <img src="assets/destination-3.jpg" alt="destination" />
-          <div class="destination__card__details">
-            <div>
-              <h4>Island of the Gods</h4>
-              <p>Bali, Indonesia</p>
-            </div>
-            <div class="destination__rating">
-              <span><i class="ri-star-fill"></i></span>
-              4.8
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="tickets" class="ticket-section">
-      <div class="container">
-        <h2 class="section-title">Available Flights</h2>
-        <div id="ticket-filters">
-          <input type="date" id="filter-date" />
-          <select id="filter-airline">
-            <option value="">All Airlines</option>
-            <option value="AirSial">AirSial</option>
-            <option value="SalamAir">SalamAir</option>
-            <option value="SereneAir">SereneAir</option>
+        <div class="form-group">
+          <label for="mealOption">Meal Option:</label>
+          <select id="mealOption" name="mealOption" required>
+            <option value="" disabled selected>Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
           </select>
         </div>
-        <div id="ticket-list" class="ticket-list"></div>
       </div>
-    </section>
 
-    <section class="section__container journey__container" id="tour">
-      <h2 class="section__header">Journey To The Sky Made Simple!</h2>
-      <p class="section__description">
-        Effortless Planning for Your Next Adventure
-      </p>
-      <div class="journey__grid">
-        <div class="journey__card">
-          <div class="journey__card__bg">
-            <span><i class="ri-bookmark-3-line"></i></span>
-            <h4>Seamless Booking Process</h4>
-          </div>
-          <div class="journey__card__content">
-            <span><i class="ri-bookmark-3-line"></i></span>
-            <h4>Easy Reservations, One Click Away</h4>
-            <p>
-              From flights and accommodations to activities and transfers,
-              everything you need is available at your fingertips, making travel
-              planning effortless.
-            </p>
+      <div class="form-row">
+        <div class="form-group flex-grow">
+          <label for="fare">Fare (Price):</label>
+          <div class="fare-input-wrapper">
+            <input
+              type="number"
+              id="fare"
+              name="fare"
+              min="0"
+              required
+              placeholder="0.00"
+            />
+            <span class="unit-label">PKR</span>
           </div>
         </div>
-        <div class="journey__card">
-          <div class="journey__card__bg">
-            <span><i class="ri-landscape-fill"></i></span>
-            <h4>Tailored Itineraries</h4>
-          </div>
-          <div class="journey__card__content">
-            <span><i class="ri-landscape-fill"></i></span>
-            <h4>Customized Plans Just for You</h4>
-            <p>
-              Enjoy personalized travel plans designed to match your preferences
-              and interests. Whether you seek adventure or cultural immersion,
-              our tailored itineraries ensure your journey is uniquely yours.
-            </p>
-          </div>
-        </div>
-        <div class="journey__card">
-          <div class="journey__card__bg">
-            <span><i class="ri-map-2-line"></i></span>
-            <h4>Expert Local Insights</h4>
-          </div>
-          <div class="journey__card__content">
-            <span><i class="ri-map-2-line"></i></span>
-            <h4>Insider Tips and Recommendations</h4>
-            <p>
-              We provide curated recommendations for dining, sightseeing, and
-              hidden gems, so you can experience each destination like a local.
-            </p>
-          </div>
+        <div class="form-group" style="align-self: flex-end; margin-top: 6px">
+          <button type="submit" class="add-ticket-btn">Add Ticket</button>
         </div>
       </div>
-    </section>
+    </form>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script>
+      const selected = document.getElementById("selectedAirline");
+      const options = document.getElementById("airlineOptions");
+      const input = document.getElementById("airlineInput");
+      const contentDiv = document.querySelector(
+        "#selectedAirline .selected-content"
+      );
 
-    <section class="section__container showcase__container" id="package">
-      <div class="showcase__image">
-        <img src="assets/showcase.jpg" alt="showcase" />
-      </div>
-      <div class="showcase__content">
-        <h4>UNLEASH WANDERLUST WITH SKYWINGS</h4>
-        <p>
-          Embark on a journey like no other with Skywings, where your travel
-          dreams come to life. Our mission is to inspire and facilitate your
-          adventures, whether you seek the vibrant energy of bustling
-          cityscapes, the serene beauty of pristine beaches, or the captivating
-          history of ancient landmarks. At Skywings, we provide expertly curated
-          destinations and personalized itineraries, ensuring that every trip is
-          tailored to your unique preferences. Discover hidden gems, immerse
-          yourself in diverse cultures, and create unforgettable memories that
-          will last a lifetime.
-        </p>
-        <p>
-          With Skywings as your ultimate travel companion, exploring the wonders
-          of the world has never been easier. Our insider tips and local
-          insights give you the tools to navigate new places with confidence and
-          excitement. From the moment you start planning to the day you return
-          home, we are dedicated to making your travel experience seamless and
-          enriching.
-        </p>
-        <div class="showcase__btn">
-          <button class="btn">
-            Book A Flight Now
-            <span><i class="ri-arrow-right-line"></i></span>
-          </button>
-        </div>
-      </div>
-    </section>
+      // Toggle dropdown open/close
+      selected.addEventListener("click", () => {
+        options.style.display =
+          options.style.display === "block" ? "none" : "block";
+      });
 
-    <section class="section__container banner__container">
-      <div class="banner__card">
-        <h4>10+</h4>
-        <p>Years Experience</p>
-      </div>
-      <div class="banner__card">
-        <h4>12K</h4>
-        <p>Happy Clients</p>
-      </div>
-      <div class="banner__card">
-        <h4>4.8</h4>
-        <p>Overall Ratings</p>
-      </div>
-    </section>
+      // Handle airline selection
+      document.querySelectorAll(".custom-option").forEach((option) => {
+        option.addEventListener("click", () => {
+          const image = option.querySelector("img").cloneNode();
 
-    <section class="section__container discover__container">
-      <h2 class="section__header">Discover The World From Above</h2>
-      <p class="section__description">
-        Experience Breathtaking Views and Unique Perspectives
-      </p>
-      <div class="discover__grid">
-        <div class="discover__card">
-          <span><i class="ri-camera-lens-line"></i></span>
-          <h4>Aerial Cityscapes</h4>
-          <p>
-            Witness the architectural marvels and bustling streets from
-            bird's-eye view, offering a unique perspective.
-          </p>
-        </div>
-        <div class="discover__card">
-          <span><i class="ri-ship-line"></i></span>
-          <h4>Coastal Wonders</h4>
-          <p>
-            Fly over pristine coastlines and turquoise waters, revealing hidden
-            coves and vibrant coral reefs.
-          </p>
-        </div>
-        <div class="discover__card">
-          <span><i class="ri-landscape-line"></i></span>
-          <h4>Historic Landmarks</h4>
-          <p>
-            Observe the grandeur of ancient castles and other significant sites
-            in a way that ground tours can't offer.
-          </p>
-        </div>
-      </div>
-    </section>
+          // Clear previous content
+          contentDiv.innerHTML = "";
+          contentDiv.style.justifyContent = "center"; // Center the image
+          contentDiv.appendChild(image);
 
-    <section class="section__container client__container">
-      <h2 class="section__header">Loved By Over Thousand Travelers</h2>
-      <p class="section__description">
-        Discover the stories of wanderlust and cherished memories through the
-        eyes of our valued clients.
-      </p>
-      <!-- Slider main container -->
-      <div class="swiper">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-          <!-- Slides -->
-          <div class="swiper-slide">
-            <div class="client__card">
-              <div class="client__content">
-                <div class="client__rating">
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                </div>
-                <p>
-                  Skywings has completely transformed my travel experience. From
-                  finding hidden gems in bustling cities to discovering serene
-                  retreats off the beaten path, every detail was thoughtfully
-                  arranged. I can't recommend Skywings enough for anyone looking
-                  to elevate their travel experience!
-                </p>
-              </div>
-              <div class="client__details">
-                <img src="assets/client-1.jpg" alt="client" />
-                <div>
-                  <h4>John Adams</h4>
-                  <h5>Travel Blogger</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="client__card">
-              <div class="client__content">
-                <div class="client__rating">
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                </div>
-                <p>
-                  My recent adventure with Skywings was nothing short of
-                  spectacular. The personalized itineraries and recommendations
-                  they provided led me to extraordinary locations that I would
-                  never have found on my own. I'm already planning my next
-                  adventure with them!
-                </p>
-              </div>
-              <div class="client__details">
-                <img src="assets/client-2.jpg" alt="client" />
-                <div>
-                  <h4>Emily Thompson</h4>
-                  <h5>Adventure Enthusiast</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="client__card">
-              <div class="client__content">
-                <div class="client__rating">
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                </div>
-                <p>
-                  Skywings offered a transformative experience for my research
-                  into historical landmarks. The unique aerial perspectives and
-                  provided a new level of appreciation and insight into the
-                  sites I studied. I highly recommend their services to fellow
-                  historians and cultural enthusiasts.
-                </p>
-              </div>
-              <div class="client__details">
-                <img src="assets/client-3.jpg" alt="client" />
-                <div>
-                  <h4>Sarah Lee</h4>
-                  <h5>Cultural Historian</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="client__card">
-              <div class="client__content">
-                <div class="client__rating">
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                  <span><i class="ri-star-fill"></i></span>
-                </div>
-                <p>
-                  Finding a balance between work and travel can be challenging,
-                  but Skywings made it effortless. Their efficient planning and
-                  excellent recommendations helped me maximize my downtime and
-                  enjoy every moment of my trip. I look forward to working with
-                  them again on future travels.
-                </p>
-              </div>
-              <div class="client__details">
-                <img src="assets/client-4.jpg" alt="client" />
-                <div>
-                  <h4>David Patel</h4>
-                  <h5>Business Executive</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+          // Set hidden input value
+          input.value = option.dataset.value;
 
-    <footer id="contact">
-      <div class="section__container footer__container">
-        <div class="footer__col">
-          <div class="footer__logo">
-            <a href="#" class="logo">Skywings</a>
-          </div>
-          <p>
-            Explore the world with ease and excitement through our comprehensive
-            travel platform. Your journey begins here, where seamless planning
-            meets unforgettable experiences.
-          </p>
-          <ul class="footer__socials">
-            <li>
-              <a href="#"><i class="ri-facebook-fill"></i></a>
-            </li>
-            <li>
-              <a href="#"><i class="ri-instagram-line"></i></a>
-            </li>
-            <li>
-              <a href="#"><i class="ri-youtube-line"></i></a>
-            </li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>Quick Links</h4>
-          <ul class="footer__links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Flights</a></li>
-            <li><a href="#">Hotels</a></li>
-            <li><a href="#">Cruise</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>Contact Us</h4>
-          <ul class="footer__links">
-            <li>
-              <a href="#">
-                <span><i class="ri-phone-fill"></i></span> +91 9876543210
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <span><i class="ri-record-mail-line"></i></span> info@skywings
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <span><i class="ri-map-pin-2-fill"></i></span> New Delhi, India
-              </a>
-            </li>
-          </ul>
-        </div>
-        <!-- <div class="footer__col">
-          <h4>Subscribe</h4>
-          <form action="/">
-            <input type="text" placeholder="Enter your email" />
-            <button class="btn">Subscribe</button>
-          </form>
-        </div> -->
-      </div>
-      <div class="footer__bar">
-        Copyright © 2024 Web Design Mastery. All rights reserved.
-      </div>
-    </footer>
+          // Close dropdown
+          options.style.display = "none";
+        });
+      });
 
-    <script src="https://unpkg.com/scrollreveal"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="main.js"></script>
+      // Close dropdown when clicking outside
+      document.addEventListener("click", (e) => {
+        if (
+          !document.querySelector(".custom-select-wrapper").contains(e.target)
+        ) {
+          options.style.display = "none";
+        }
+      });
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDLEu8uHZQJT4IchhjaYDm2QH029EFVrgg",
+        authDomain: "ticket-data-bdeb6.firebaseapp.com",
+        projectId: "ticket-data-bdeb6",
+        storageBucket: "ticket-data-bdeb6.firebasestorage.app",
+        messagingSenderId: "625235648325",
+        appId: "1:625235648325:web:7a04f8d316f0c43432e82c",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      document
+        .getElementById("ticketForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const ticket = {
+            airline: document.getElementById("airlineInput").value,
+            date: document.getElementById("flightDate").value,
+            bagWeight: document.getElementById("bagWeight").value,
+            meal: document.getElementById("mealOption").value,
+            fare: document.getElementById("fare").value,
+          };
+
+          db.collection("tickets")
+            .add(ticket)
+            .then(() => {
+              alert("Ticket saved to Firebase!");
+              // Optionally redirect
+              // window.location.href = "ticket.html";
+            })
+            .catch((error) => {
+              console.error("Error saving ticket:", error);
+            });
+        });
+    </script>
   </body>
 </html>
