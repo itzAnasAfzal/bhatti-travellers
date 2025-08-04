@@ -327,6 +327,12 @@
               alert("Ticket saved to Firebase!");
               // Optionally redirect
               // window.location.href = "ticket.html";
+              document.getElementById("ticketForm").reset();
+
+              // Clear custom airline selection
+              input.value = "";
+              contentDiv.innerHTML = "<span>Select an airline</span>";
+              contentDiv.style.justifyContent = "flex-start";
             })
             .catch((error) => {
               console.error("Error saving ticket:", error);
