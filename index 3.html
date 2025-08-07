@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        padding: 30px;
+        background-color: #f9f9f9;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+        color: #222;
+      }
+
+      form {
+        max-width: 800px;
+        margin: auto;
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .form-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        margin-bottom: 6px;
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+      }
+
+      input[type="number"],
+      input[type="date"],
+      select {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      /* Airline dropdown styles */
+      .custom-select-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .custom-select {
+        border: 1px solid #ccc;
+        padding: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        height: 40px;
+        border-radius: 5px;
+        background-color: #fff;
+      }
+
+      .selected-content {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .selected-content img {
+        margin: 0 auto;
+        display: block;
+        max-height: 30px;
+      }
+
+      .custom-options {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        display: none;
+        z-index: 10;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .custom-option {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+      }
+
+      .custom-option:hover {
+        background-color: #f0f0f0;
+      }
+
+      .custom-option img {
+        width: 70px;
+        height: auto;
+        object-fit: contain;
+      }
+
+      /* Bag and Fare input wrappers */
+      .bag-input-wrapper,
+      .fare-input-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+      }
+
+      .bag-input-wrapper input[type="number"],
+      .fare-input-wrapper input[type="number"] {
+        width: 100%;
+        padding-right: 50px;
+        text-align: right;
+      }
+      .flex-grow {
+        flex: 2;
+      }
+      .unit-label {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #555;
+        font-size: 14px;
+        pointer-events: none;
+      }
+      .add-ticket-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+      }
+
+      .add-ticket-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="ticketForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Select Airline:</label>
+          <div class="custom-select-wrapper">
+            <div class="custom-select" id="selectedAirline">
+              <div class="selected-content">
+                <span>Select an airline</span>
+              </div>
+            </div>
+            <div class="custom-options" id="airlineOptions">
+              <div class="custom-option" data-value="airblue">
+                <img src="assets/logos/airblue.png" alt="Airline 1" />
+              </div>
+              <div class="custom-option" data-value="airsial">
+                <img src="assets/logos/airsial.png" alt="Airline 2" />
+              </div>
+              <div class="custom-option" data-value="british">
+                <img src="assets/logos/british.png" alt="Airline 3" />
+              </div>
+              <div class="custom-option" data-value="emirates">
+                <img src="assets/logos/emirates.png" alt="Airline 4" />
+              </div>
+              <div class="custom-option" data-value="mahan">
+                <img src="assets/logos/mahan.png" alt="Airline 5" />
+              </div>
+              <div class="custom-option" data-value="oman">
+                <img src="assets/logos/oman.png" alt="Airline 6" />
+              </div>
+              <div class="custom-option" data-value="qatar">
+                <img src="assets/logos/qatar.png" alt="Airline 7" />
+              </div>
+              <div class="custom-option" data-value="sereneair">
+                <img src="assets/logos/sereneair.png" alt="Airline 8" />
+              </div>
+            </div>
+          </div>
+          <input type="hidden" name="airline" id="airlineInput" required />
+        </div>
+
+        <div class="form-group">
+          <label for="flightDate">Select Date:</label>
+          <input type="date" id="flightDate" name="flightDate" required />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="bagWeight">Bag Weight:</label>
+          <div class="bag-input-wrapper">
+            <input
+              type="number"
+              id="bagWeight"
+              name="bagWeight"
+              min="0"
+              required
+              placeholder="0"
+            />
+            <span class="unit-label">kg</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="mealOption">Meal Option:</label>
+          <select id="mealOption" name="mealOption" required>
+            <option value="" disabled selected>Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group flex-grow">
+          <label for="fare">Fare (Price):</label>
+          <div class="fare-input-wrapper">
+            <input
+              type="number"
+              id="fare"
+              name="fare"
+              min="0"
+              required
+              placeholder="0.00"
+            />
+            <span class="unit-label">PKR</span>
+          </div>
+        </div>
+        <div class="form-group" style="align-self: flex-end; margin-top: 6px">
+          <button type="submit" class="add-ticket-btn">Add Ticket</button>
+        </div>
+      </div>
+    </form>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script>
+      const selected = document.getElementById("selectedAirline");
+      const options = document.getElementById("airlineOptions");
+      const input = document.getElementById("airlineInput");
+      const contentDiv = document.querySelector(
+        "#selectedAirline .selected-content"
+      );
+
+      // Toggle dropdown open/close
+      selected.addEventListener("click", () => {
+        options.style.display =
+          options.style.display === "block" ? "none" : "block";
+      });
+
+      // Handle airline selection
+      document.querySelectorAll(".custom-option").forEach((option) => {
+        option.addEventListener("click", () => {
+          const image = option.querySelector("img").cloneNode();
+
+          // Clear previous content
+          contentDiv.innerHTML = "";
+          contentDiv.style.justifyContent = "center"; // Center the image
+          contentDiv.appendChild(image);
+
+          // Set hidden input value
+          input.value = option.dataset.value;
+
+          // Close dropdown
+          options.style.display = "none";
+        });
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", (e) => {
+        if (
+          !document.querySelector(".custom-select-wrapper").contains(e.target)
+        ) {
+          options.style.display = "none";
+        }
+      });
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDLEu8uHZQJT4IchhjaYDm2QH029EFVrgg",
+        authDomain: "ticket-data-bdeb6.firebaseapp.com",
+        projectId: "ticket-data-bdeb6",
+        storageBucket: "ticket-data-bdeb6.firebasestorage.app",
+        messagingSenderId: "625235648325",
+        appId: "1:625235648325:web:7a04f8d316f0c43432e82c",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      document
+        .getElementById("ticketForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const ticket = {
+            airline: document.getElementById("airlineInput").value,
+            date: document.getElementById("flightDate").value,
+            bagWeight: document.getElementById("bagWeight").value,
+            meal: document.getElementById("mealOption").value,
+            fare: document.getElementById("fare").value,
+          };
+
+          db.collection("tickets")
+            .add(ticket)
+            .then(() => {
+              alert("Ticket saved to Firebase!");
+              // Optionally redirect
+              // window.location.href = "ticket.html";
+              document.getElementById("ticketForm").reset();
+
+              // Clear custom airline selection
+              input.value = "";
+              contentDiv.innerHTML = "<span>Select an airline</span>";
+              contentDiv.style.justifyContent = "flex-start";
+            })
+            .catch((error) => {
+              console.error("Error saving ticket:", error);
+            });
+        });
+    </script>
+  </body>
+</html>
